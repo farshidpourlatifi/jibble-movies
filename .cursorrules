@@ -1,0 +1,137 @@
+You are an expert in TypeScript, Node.js, bun, Vite, Vue.js, Vue Router, Pinia, VueUse, Shadcn Vue, Radix Vue, and Tailwind, with a deep understanding of best practices and performance optimization techniques in these technologies.
+
+Code Style and Structure
+- Write concise, maintainable, and technically accurate TypeScript code
+- Use composition API and declarative programming patterns; avoid options API
+- Use functional and declarative programming patterns; avoid classes
+- Favor iteration and modularization to adhere to DRY principles
+- Follow SOLID principles
+- Use descriptive variable names with auxiliary verbs (e.g., isLoading, hasError)
+- Organize files systematically: each file should contain only related content
+
+Naming Conventions
+- Use PascalCase for components (MovieCard.vue)
+- Use camelCase for composables (useMovieSearch.ts)
+- Use lowercase with dashes for directories (components/auth-wizard)
+- Use .spec.ts extension for unit tests
+- Use .cy.ts extension for Cypress tests
+
+TypeScript Usage
+- Use TypeScript for all code; prefer interfaces over types for their extendability
+- Avoid enums; use const objects with as const for type safety
+- Use type inference where possible
+- Define strict typing for API responses and requests
+
+Testing Guidelines
+Unit Testing (Vitest)
+- Test file location should mirror source file structure
+- Use describe blocks to group related tests
+- Use beforeEach for common setup
+- Mock external dependencies and API calls
+- Test component rendering, props, emits, and user interactions
+- Use test-utils mounting options appropriately
+- Follow AAA pattern (Arrange, Act, Assert)
+
+Example unit test structure:
+```typescript
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { mount } from '@vue/test-utils'
+import { createTestingPinia } from '@pinia/testing'
+
+describe('ComponentName', () => {
+  beforeEach(() => {
+    // Common setup
+  })
+
+  it('should render correctly', () => {
+    // Arrange
+    // Act
+    // Assert
+  })
+
+  it('should handle user interactions', async () => {
+    // Tests
+  })
+})
+```
+
+E2E Testing (Cypress)
+Write tests from user perspective
+Use data-testid for test selectors
+Test critical user flows end-to-end
+Use custom commands for common operations
+Use fixtures for test data
+Implement page objects pattern for complex pages
+
+Example Cypress test structure:
+```typescript
+describe('Feature Name', () => {
+  beforeEach(() => {
+    cy.visit('/')
+  })
+
+  it('should complete main user flow', () => {
+    // Test steps
+  })
+})
+```
+
+Component Testing Principles
+Test props validation
+Test emitted events
+Test slots rendering
+Test component lifecycle
+Test error states
+Test loading states
+Test edge cases
+
+Store Testing
+Test initial state
+Test mutations/actions
+Test getters
+Mock API calls in store tests
+
+UI and Styling
+Use Shadcn Vue, Radix Vue, and Tailwind
+Implement responsive design with Tailwind CSS
+Follow mobile-first approach
+Use CSS custom properties for theming
+
+Performance Optimization
+Leverage VueUse functions for enhanced reactivity
+Use Suspense for async components
+Implement lazy loading
+Optimize images and assets
+Use code splitting effectively
+
+Development Workflow
+Use feature branches
+Write meaningful commit messages
+Document complex logic
+Review code before merging
+Maintain test coverage thresholds
+
+Build and Deploy
+Use Vite for development and building
+Implement proper environment configuration
+Optimize bundle size
+Set up CI/CD pipelines using github actions
+Configure proper caching strategies
+
+Error Handling
+Implement global error handling
+Use try-catch blocks appropriately
+Log errors effectively
+Show user-friendly error messages
+Handle API errors gracefully
+
+README.md
+- Add a README.md file to the root of the project with the following information:
+  - Project name
+  - Project description
+  - Project installation instructions
+  - Project usage instructions
+  - Project testing instructions
+  - Project deployment instructions
+and keep it updated with the latest information. on each change remember to reflect the changes needed to this README/md file.
+you can also refere to it as the documentation to the system and the project.
