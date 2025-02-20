@@ -1,16 +1,33 @@
 <script setup lang="ts">
-import MovieList from '@/components/movies/MovieList.vue'
-import MovieSearch from '@/components/movies/MovieSearch.vue'
+import { RouterView, RouterLink } from 'vue-router'
+import { useFavoritesStore } from '@/stores/favorites'
+
+const favoritesStore = useFavoritesStore()
 </script>
 
 <template>
   <div class="container mx-auto px-4 py-8">
     <header class="mb-8">
-      <h1 class="text-3xl font-bold mb-4">Movie Listing App</h1>
-      <MovieSearch />
+      <nav class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">Movie Listing App</h1>
+        <div class="flex gap-4">
+          <RouterLink 
+            to="/" 
+            class="text-blue-500 hover:text-blue-700"
+          >
+            Home
+          </RouterLink>
+          <RouterLink 
+            to="/favorites" 
+            class="text-blue-500 hover:text-blue-700"
+          >
+            Favorites ({{ favoritesStore.favoritesCount }})
+          </RouterLink>
+        </div>
+      </nav>
     </header>
     <main>
-      <MovieList />
+      <RouterView />
     </main>
   </div>
 </template>
