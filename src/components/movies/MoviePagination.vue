@@ -9,7 +9,15 @@ const pages = computed(() => {
   const total = store.totalPages
   const items: (number | string)[] = []
 
-  // Always show first page
+  // If total pages is 5 or less, show all pages
+  if (total <= 5) {
+    for (let i = 1; i <= total; i++) {
+      items.push(i)
+    }
+    return items
+  }
+
+  // For more than 5 pages, use ellipsis
   items.push(1)
 
   // Calculate range around current page
@@ -33,10 +41,8 @@ const pages = computed(() => {
     items.push('...')
   }
 
-  // Always show last page if there is more than one page
-  if (total > 1) {
-    items.push(total)
-  }
+  // Always show last page
+  items.push(total)
 
   return items
 })

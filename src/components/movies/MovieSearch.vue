@@ -2,6 +2,8 @@
 import { ref, watch } from 'vue'
 import { useMovieStore } from '@/stores/movies'
 import { useDebounceFn } from '@vueuse/core'
+import SearchInput from '@/components/ui/SearchInput.vue'
+import LoadingSpinner from '@/components/ui/LoadingSpinner.vue'
 
 const store = useMovieStore()
 const searchQuery = ref('')
@@ -16,12 +18,17 @@ watch(searchQuery, (newQuery) => {
 </script>
 
 <template>
-  <div class="w-full max-w-md">
-    <input
+  <div class="relative">
+    <SearchInput
       v-model="searchQuery"
-      type="search"
       placeholder="Search movies..."
-      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      class="w-full max-w-md"
     />
+    <div 
+      v-if="store.isLoading" 
+      class="absolute right-12 top-1/2 -translate-y-1/2"
+    >
+      <LoadingSpinner size="sm" />
+    </div>
   </div>
 </template> 
