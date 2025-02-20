@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import type { Movie, MovieState } from '@/types/movie'
+import type { Router } from 'vue-router'
 
 export const useMovieStore = defineStore('movies', {
   state: (): MovieState => ({
@@ -17,11 +18,21 @@ export const useMovieStore = defineStore('movies', {
   },
 
   actions: {
-    async fetchMovies(page: number = 1, title: string = '') {
+    async fetchMovies(page: number = 1, title: string = '', router?: Router) {
       this.isLoading = true
       this.error = null
       
       try {
+        // Update URL if router is provided
+        if (router) {
+          await router.replace({ 
+            query: { 
+              ...(title && { q: title }),
+              ...(page > 1 && { page: page.toString() })
+            }
+          })
+        }
+
         const response = await fetch(
           `https://jsonmock.hackerrank.com/api/movies/search/?Title=${title}&page=${page}`
         )
@@ -44,15 +55,15 @@ export const useMovieStore = defineStore('movies', {
       }
     },
 
-    setPage(page: number) {
+    setPage(page: number, router?: Router) {
       this.currentPage = page
-      return this.fetchMovies(page, this.searchQuery)
+      return this.fetchMovies(page, this.searchQuery, router)
     },
 
-    setSearch(query: string) {
+    setSearch(query: string, router?: Router) {
       this.searchQuery = query
       this.currentPage = 1
-      return this.fetchMovies(1, query)
+      return this.fetchMovies(1, query, router)
     }
   }
 }) 

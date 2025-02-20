@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useMovieStore } from '@/stores/movies'
 import MovieCard from './MovieCard.vue'
 import MoviePagination from './MoviePagination.vue'
@@ -7,9 +8,10 @@ import MovieCardSkeleton from '@/components/ui/MovieCardSkeleton.vue'
 import ErrorAlert from '@/components/ui/ErrorAlert.vue'
 
 const store = useMovieStore()
+const router = useRouter()
 
 onMounted(async () => {
-  await store.fetchMovies()
+  await store.fetchMovies(1, '', router)
 })
 </script>
 

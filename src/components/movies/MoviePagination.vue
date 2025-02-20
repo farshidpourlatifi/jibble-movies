@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useMovieStore } from '@/stores/movies'
 
 const store = useMovieStore()
+const router = useRouter()
 
 const pages = computed(() => {
   const current = store.currentPage
@@ -49,7 +51,7 @@ const pages = computed(() => {
 
 const handlePageClick = (page: number | string) => {
   if (typeof page === 'number' && page !== store.currentPage) {
-    store.setPage(page)
+    store.setPage(page, router)
   }
 }
 </script>
