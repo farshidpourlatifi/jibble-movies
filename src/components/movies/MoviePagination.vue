@@ -13,22 +13,30 @@ const pages = computed(() => {
   items.push(1)
 
   // Calculate range around current page
-  let start = Math.max(2, current - 2)
-  let end = Math.min(total - 1, current + 2)
+  let start = Math.max(2, current - 1)
+  let end = Math.min(total - 1, current + 1)
 
-  // Add ellipsis if needed
-  if (start > 2) items.push('...')
+  // Add ellipsis if needed before current range
+  if (start > 2) {
+    items.push('...')
+  }
 
   // Add pages around current
   for (let i = start; i <= end; i++) {
-    items.push(i)
+    if (i !== 1 && i !== total) { // Avoid duplicating first and last pages
+      items.push(i)
+    }
   }
 
-  // Add ellipsis if needed
-  if (end < total - 1) items.push('...')
+  // Add ellipsis if needed after current range
+  if (end < total - 1) {
+    items.push('...')
+  }
 
   // Always show last page if there is more than one page
-  if (total > 1) items.push(total)
+  if (total > 1) {
+    items.push(total)
+  }
 
   return items
 })
