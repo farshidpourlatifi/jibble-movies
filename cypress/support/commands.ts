@@ -1,9 +1,11 @@
 /// <reference types="cypress" />
 
-declare namespace Cypress {
-  interface Chainable {
-    searchMovies(query: string): Chainable<void>
-    toggleFavorite(movieTitle: string): Chainable<void>
+declare global {
+  namespace Cypress {
+    interface Chainable<Subject = any> {
+      searchMovies(query: string): Chainable<void>
+      toggleFavorite(movieTitle: string): Chainable<void>
+    }
   }
 }
 

@@ -1,39 +1,55 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { createPinia, setActivePinia } from 'pinia'
+import { createTestingPinia } from '@pinia/testing'
+import { createRouter, createWebHistory } from 'vue-router'
 import MovieSearch from '@/components/movies/MovieSearch.vue'
 import { useMovieStore } from '@/stores/movies'
 
 describe('MovieSearch', () => {
-  beforeEach(() => {
-    setActivePinia(createPinia())
+  const router = createRouter({
+    history: createWebHistory(),
+    routes: []
   })
 
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  const mountComponent = () => {
+    return mount(MovieSearch, {
+      global: {
+        plugins: [
+          createTestingPinia({
+            createSpy: vi.fn
+          }),
+          router
+        ]
+      }
+    })
+  }
+
   it('should update search query on input', async () => {
-    const wrapper = mount(MovieSearch)
-    const input = wrapper.find('input')
+    const wrapper = mountComponent()
+    const store = useMovieStore()
     
-    await input.setValue('test query')
-    expect(input.element.value).toBe('test query')
+    await wrapper.find('input').setValue('test')
+    expect(wrapper.find('input').element.value).toBe('test')
   })
 
   it('should debounce search calls', async () => {
+    const wrapper = mountComponent()
     const store = useMovieStore()
     const searchSpy = vi.spyOn(store, 'setSearch')
-    
-    const wrapper = mount(MovieSearch)
-    const input = wrapper.find('input')
-    
-    await input.setValue('t')
-    await input.setValue('te')
-    await input.setValue('tes')
-    await input.setValue('test')
-    
-    // Wait for debounce
-    await new Promise(resolve => setTimeout(resolve, 350))
-    
+
+    await wrapper.find('input').setValue('test')
+    await wrapper.find('input').setValue('test2')
+    await wrapper.find('input').setValue('test3')
+
+    // Fast-forward timers to trigger debounced function
+    vi.advanceTimersByTime(300)
+
     // Should only be called once due to debounce
     expect(searchSpy).toHaveBeenCalledTimes(1)
-    expect(searchSpy).toHaveBeenLastCalledWith('test')
+    expect(searchSpy).toHaveBeenLastCalledWith('test3', router)
   })
 }) 

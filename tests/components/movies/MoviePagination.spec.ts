@@ -1,19 +1,33 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
+import { createRouter, createWebHistory } from 'vue-router'
 import MoviePagination from '@/components/movies/MoviePagination.vue'
 import { useMovieStore } from '@/stores/movies'
 
 describe('MoviePagination', () => {
+  const router = createRouter({
+    history: createWebHistory(),
+    routes: []
+  })
+
   beforeEach(() => {
     setActivePinia(createPinia())
   })
+
+  const mountComponent = () => {
+    return mount(MoviePagination, {
+      global: {
+        plugins: [router]
+      }
+    })
+  }
 
   it('should not render pagination when only one page exists', () => {
     const store = useMovieStore()
     store.totalPages = 1
     
-    const wrapper = mount(MoviePagination)
+    const wrapper = mountComponent()
     expect(wrapper.find('button').exists()).toBe(false)
   })
 
@@ -22,7 +36,7 @@ describe('MoviePagination', () => {
     store.totalPages = 5
     store.currentPage = 3
     
-    const wrapper = mount(MoviePagination)
+    const wrapper = mountComponent()
     const buttons = wrapper.findAll('button')
     
     // Should show: 1, 2, 3, 4, 5
@@ -39,7 +53,7 @@ describe('MoviePagination', () => {
     store.totalPages = 3
     store.currentPage = 1
     
-    const wrapper = mount(MoviePagination)
+    const wrapper = mountComponent()
     const pageButton = wrapper.findAll('button')[1] // Second page button
     
     await pageButton.trigger('click')
@@ -52,7 +66,7 @@ describe('MoviePagination', () => {
     store.totalPages = 10
     store.currentPage = 5
     
-    const wrapper = mount(MoviePagination)
+    const wrapper = mountComponent()
     const buttons = wrapper.findAll('button')
     
     // Should show: 1, ..., 4, 5, 6, ..., 10

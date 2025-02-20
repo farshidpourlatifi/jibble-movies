@@ -28,7 +28,7 @@ describe('Favorites', () => {
       .click()
     
     // Wait for the empty state to appear
-    cy.contains('No favorites yet').should('be.visible')
+    cy.contains('No favorite movies yet').should('be.visible')
   })
 
   it('should persist favorites after page reload', () => {
