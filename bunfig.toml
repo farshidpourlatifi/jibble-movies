@@ -1,0 +1,8 @@
+[install]
+exact = true
+
+[install.scopes]
+types = "development"
+
+[test]
+preload = "./tests/setup.ts" 
