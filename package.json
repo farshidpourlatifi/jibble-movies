@@ -23,7 +23,8 @@
     "@vueuse/core": "^10.7.0",
     "pinia": "^2.1.7",
     "vue": "^3.3.11",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "serve": "^14.2.1"
   },
   "devDependencies": {
     "@pinia/testing": "^0.1.3",
