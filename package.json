@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -14,8 +13,11 @@
     "test:e2e:dev": "cypress open --e2e",
     "test:e2e": "cypress run --e2e",
     "test:component": "cypress open --component",
-    "test:unit": "vitest",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "type-check": "vue-tsc --noEmit",
+    "test:unit": "vitest run",
+    "test:e2e:ci": "cypress run",
+    "build": "vite build"
   },
   "dependencies": {
     "@vueuse/core": "^10.7.0",
@@ -37,9 +39,9 @@
     "postcss": "^8.4.32",
     "sass": "^1.69.5",
     "tailwindcss": "^3.3.6",
-    "typescript": "^5.2.2",
+    "typescript": "~5.3.3",
     "vite": "^5.0.8",
     "vitest": "^1.0.4",
-    "vue-tsc": "^1.8.25"
+    "vue-tsc": "^1.8.27"
   }
 }

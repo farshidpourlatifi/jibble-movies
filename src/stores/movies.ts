@@ -4,7 +4,7 @@ import type { Router } from 'vue-router'
 
 export const useMovieStore = defineStore('movies', {
   state: (): MovieState => ({
-    movies: [],
+    movies: [] as Movie[],
     currentPage: 1,
     totalPages: 0,
     isLoading: false,
