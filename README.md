@@ -152,3 +152,50 @@ For the CI/CD pipeline to work, you need to set these secrets in your GitHub rep
 ## License
 
 MIT
+
+## Development Guidelines
+
+### Code Style Rules (.cursorrules)
+
+The project uses a `.cursorrules` file to define coding standards and best practices:
+
+- Code Style and Structure
+  - Use Composition API and declarative programming patterns
+  - Follow SOLID principles
+  - Use descriptive variable names with auxiliary verbs (e.g., isLoading, hasError)
+  - Organize files systematically
+
+- Naming Conventions
+  - PascalCase for components (MovieCard.vue)
+  - camelCase for composables (useMovieSearch.ts)
+  - lowercase with dashes for directories (components/auth-wizard)
+  - .spec.ts extension for unit tests
+  - .cy.ts extension for Cypress tests
+
+- TypeScript Usage
+  - Use TypeScript for all code
+  - Prefer interfaces over types
+  - Use type inference where possible
+  - Define strict typing for API responses
+
+### Project Instructions (instructions.txt)
+
+The `instructions.txt` file contains important project guidelines:
+
+- Testing Requirements
+  - Unit tests must cover all components and stores
+  - E2E tests must cover critical user flows
+  - Use data-testid for test selectors
+  - Follow AAA pattern in unit tests
+
+- Performance Guidelines
+  - Use VueUse for enhanced reactivity
+  - Implement lazy loading where appropriate
+  - Optimize bundle size
+  - Use code splitting
+
+- Code Review Standards
+  - All PRs must have tests
+  - Maintain test coverage thresholds
+  - Document complex logic
+  - Follow the defined code style

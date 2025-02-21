@@ -23,7 +23,7 @@ const clearSearch = () => {
     :class="{ 'ring-2 ring-blue-500 ring-opacity-50': isFocused }"
   >
     <input
-      type="search"
+      type="text"
       :value="modelValue"
       @input="e => emit('update:modelValue', (e.target as HTMLInputElement).value)"
       @focus="isFocused = true"
