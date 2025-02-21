@@ -48,8 +48,13 @@ jobs:
       - name: Run unit tests
         run: pnpm test:unit
 
+      - name: Start dev server
+        run: pnpm dev & npx wait-on http://localhost:5173
+
       - name: Run e2e tests
         run: pnpm test:e2e:ci
+        env:
+          CYPRESS_BASE_URL: http://localhost:5173
 
       - name: Build
         run: pnpm build
