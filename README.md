@@ -55,9 +55,6 @@ pnpm dev
 
 # Type checking
 pnpm type-check
-
-# Lint code
-pnpm lint
 ```
 
 ### Testing
@@ -65,14 +62,8 @@ pnpm lint
 # Run unit tests
 pnpm test:unit
 
-# Run unit tests with coverage
-pnpm test:coverage
-
 # Run unit tests in watch mode
 pnpm test:watch
-
-# Open Vitest UI
-pnpm test:ui
 
 # Run E2E tests in headless mode
 pnpm test:e2e
@@ -82,9 +73,6 @@ pnpm test:e2e:dev
 
 # Run E2E tests in CI mode
 pnpm test:e2e:ci
-
-# Open Cypress for component testing
-pnpm test:component
 ```
 
 ### Building
