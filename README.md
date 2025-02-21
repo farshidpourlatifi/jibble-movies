@@ -41,11 +41,6 @@ cd jibble-movies
 pnpm install
 ```
 
-3. Create a `.env` file in the root directory:
-```bash
-VITE_API_BASE_URL=https://jsonmock.hackerrank.com/api/movies
-```
-
 ## Available Commands
 
 ### Development
