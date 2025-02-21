@@ -4,8 +4,8 @@ import MovieSearch from '@/components/movies/MovieSearch.vue'
 </script>
 
 <template>
-  <div class="home-view">
-    <MovieSearch class="mb-8" />
+  <div class="home-view" data-testid="home-view">
+    <MovieSearch />
     <MovieList />
   </div>
 </template> 

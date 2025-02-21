@@ -20,11 +20,11 @@ watch(searchQuery, (newQuery) => {
 </script>
 
 <template>
-  <div class="relative">
+  <div class="mb-8" data-testid="movie-search">
     <SearchInput
       v-model="searchQuery"
       placeholder="Search movies..."
-      class="w-full max-w-md"
+      class="w-full max-w-xl mx-auto"
     />
     <div 
       v-if="store.isLoading" 

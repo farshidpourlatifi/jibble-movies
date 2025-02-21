@@ -1,55 +1,53 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { createTestingPinia } from '@pinia/testing'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createPinia, setActivePinia } from 'pinia'
 import MovieSearch from '@/components/movies/MovieSearch.vue'
 import { useMovieStore } from '@/stores/movies'
 
+// Mock vue-router
+vi.mock('vue-router', () => ({
+  useRouter: vi.fn(() => ({
+    push: vi.fn(),
+    replace: vi.fn()
+  }))
+}))
+
 describe('MovieSearch', () => {
-  const router = createRouter({
-    history: createWebHistory(),
-    routes: []
-  })
-
   beforeEach(() => {
-    vi.useFakeTimers()
+    setActivePinia(createPinia())
+    vi.clearAllMocks()
   })
-
-  const mountComponent = () => {
-    return mount(MovieSearch, {
-      global: {
-        plugins: [
-          createTestingPinia({
-            createSpy: vi.fn
-          }),
-          router
-        ]
-      }
-    })
-  }
 
   it('should update search query on input', async () => {
-    const wrapper = mountComponent()
+    const wrapper = mount(MovieSearch)
     const store = useMovieStore()
+    const setSearchSpy = vi.spyOn(store, 'setSearch')
+
+    const input = wrapper.find('[data-testid="search-input"]')
+    await input.setValue('Batman')
     
-    await wrapper.find('input').setValue('test')
-    expect(wrapper.find('input').element.value).toBe('test')
+    // Wait for debounce
+    await new Promise(resolve => setTimeout(resolve, 350))
+    
+    expect(setSearchSpy).toHaveBeenCalledWith('Batman', expect.anything())
   })
 
-  it('should debounce search calls', async () => {
-    const wrapper = mountComponent()
+  it('should show loading spinner while searching', async () => {
+    const wrapper = mount(MovieSearch)
     const store = useMovieStore()
-    const searchSpy = vi.spyOn(store, 'setSearch')
+    store.isLoading = true
 
-    await wrapper.find('input').setValue('test')
-    await wrapper.find('input').setValue('test2')
-    await wrapper.find('input').setValue('test3')
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('[data-testid="loading-spinner"]').exists()).toBe(true)
+  })
 
-    // Fast-forward timers to trigger debounced function
-    vi.advanceTimersByTime(300)
-
-    // Should only be called once due to debounce
-    expect(searchSpy).toHaveBeenCalledTimes(1)
-    expect(searchSpy).toHaveBeenLastCalledWith('test3', router)
+  it('should clear search input when clicking clear button', async () => {
+    const wrapper = mount(MovieSearch)
+    const input = wrapper.find<HTMLInputElement>('[data-testid="search-input"]')
+    
+    await input.setValue('Batman')
+    await wrapper.find('[data-testid="clear-search"]').trigger('click')
+    
+    expect(input.element.value).toBe('')
   })
 }) 

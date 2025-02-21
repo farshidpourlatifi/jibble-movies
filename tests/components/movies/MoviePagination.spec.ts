@@ -1,72 +1,69 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
-import { createRouter, createWebHistory } from 'vue-router'
 import MoviePagination from '@/components/movies/MoviePagination.vue'
 import { useMovieStore } from '@/stores/movies'
 
-describe('MoviePagination', () => {
-  const router = createRouter({
-    history: createWebHistory(),
-    routes: []
-  })
+// Mock vue-router
+vi.mock('vue-router', () => ({
+  useRouter: vi.fn(() => ({
+    push: vi.fn(),
+    replace: vi.fn()
+  }))
+}))
 
+describe('MoviePagination', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
+    vi.clearAllMocks()
   })
 
-  const mountComponent = () => {
-    return mount(MoviePagination, {
-      global: {
-        plugins: [router]
-      }
-    })
-  }
-
-  it('should not render pagination when only one page exists', () => {
+  it('should not render pagination when total pages is 1', () => {
     const store = useMovieStore()
     store.totalPages = 1
-    
-    const wrapper = mountComponent()
-    expect(wrapper.find('button').exists()).toBe(false)
+
+    const wrapper = mount(MoviePagination)
+    expect(wrapper.find('[data-testid="pagination"]').exists()).toBe(false)
   })
 
-  it('should render correct number of page buttons', async () => {
-    const store = useMovieStore()
-    store.totalPages = 5
-    store.currentPage = 3
-    
-    const wrapper = mountComponent()
-    const buttons = wrapper.findAll('button')
-    
-    // Should show: 1, 2, 3, 4, 5
-    expect(buttons).toHaveLength(5)
-    expect(buttons[0].text()).toBe('1')
-    expect(buttons[1].text()).toBe('2')
-    expect(buttons[2].text()).toBe('3')
-    expect(buttons[3].text()).toBe('4')
-    expect(buttons[4].text()).toBe('5')
-  })
-
-  it('should call setPage when clicking a page button', async () => {
+  it('should render correct number of pages', () => {
     const store = useMovieStore()
     store.totalPages = 3
     store.currentPage = 1
-    
-    const wrapper = mountComponent()
-    const pageButton = wrapper.findAll('button')[1] // Second page button
-    
-    await pageButton.trigger('click')
-    expect(store.currentPage).toBe(2)
+
+    const wrapper = mount(MoviePagination)
+    const pages = wrapper.findAll('[data-testid^="page-"]')
+    expect(pages).toHaveLength(3)
   })
 
-  // Add a new test for when we actually need ellipsis
+  it('should highlight current page', () => {
+    const store = useMovieStore()
+    store.totalPages = 3
+    store.currentPage = 2
+
+    const wrapper = mount(MoviePagination)
+    const currentPage = wrapper.find('[data-testid="page-2"]')
+    expect(currentPage.classes()).toContain('bg-blue-500')
+  })
+
+  it('should call setPage when clicking a page', async () => {
+    const store = useMovieStore()
+    store.totalPages = 3
+    store.currentPage = 1
+    const setPageSpy = vi.spyOn(store, 'setPage')
+
+    const wrapper = mount(MoviePagination)
+    await wrapper.find('[data-testid="page-2"]').trigger('click')
+
+    expect(setPageSpy).toHaveBeenCalledWith(2, expect.anything())
+  })
+
   it('should show ellipsis for larger page ranges', async () => {
     const store = useMovieStore()
     store.totalPages = 10
     store.currentPage = 5
     
-    const wrapper = mountComponent()
+    const wrapper = mount(MoviePagination)
     const buttons = wrapper.findAll('button')
     
     // Should show: 1, ..., 4, 5, 6, ..., 10

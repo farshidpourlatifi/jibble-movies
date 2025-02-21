@@ -25,24 +25,29 @@ describe('Pagination', () => {
     ).as('page2')
 
     cy.visit('/')
-    cy.searchMovies('Batman')
+    cy.get('[data-testid="search-input"]').type('Batman')
     cy.wait('@page1')
   })
 
   it('should navigate through pages', () => {
-    // Check first page content
-    cy.get('.movie-list').should('exist')
+    // Check first page
+    cy.get('[data-testid="movie-list"]').should('exist')
+    cy.url().should('include', 'q=Batman')
     
     // Go to next page
-    cy.get('button').contains('2').click()
+    cy.get('[data-testid="page-2"]').click()
     cy.wait('@page2')
-    
-    // URL should reflect page change
     cy.url().should('include', 'page=2')
+    cy.get('[data-testid="movie-list"]').should('exist')
+    
+    // Go back to first page
+    cy.get('[data-testid="page-1"]').click()
+    cy.wait('@page1')
+    cy.url().should('include', 'q=Batman')
   })
 
   it('should maintain search query when changing pages', () => {
-    cy.get('button').contains('2').click()
+    cy.get('[data-testid="page-2"]').click()
     cy.wait('@page2')
     cy.url().should('include', 'Batman')
     cy.url().should('include', 'page=2')

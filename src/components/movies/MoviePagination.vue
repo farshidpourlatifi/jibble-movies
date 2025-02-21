@@ -57,20 +57,18 @@ const handlePageClick = (page: number | string) => {
 </script>
 
 <template>
-  <div v-if="store.totalPages > 1" class="flex justify-center gap-2 mt-8">
+  <div 
+    v-if="store.totalPages > 1" 
+    class="flex justify-center mt-8 gap-2"
+    data-testid="pagination"
+  >
     <button
       v-for="page in pages"
       :key="page"
-      :class="[
-        'px-3 py-1 rounded',
-        {
-          'bg-blue-500 text-white': page === store.currentPage,
-          'bg-gray-200 hover:bg-gray-300': page !== store.currentPage && page !== '...',
-          'cursor-default': page === '...'
-        }
-      ]"
-      :disabled="page === '...'"
+      class="px-3 py-1 rounded border"
+      :class="{ 'bg-blue-500 text-white': page === store.currentPage }"
       @click="handlePageClick(page)"
+      :data-testid="`page-${page}`"
     >
       {{ page }}
     </button>

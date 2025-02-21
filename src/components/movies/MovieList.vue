@@ -16,23 +16,26 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="movie-list">
+  <div class="movie-list" data-testid="movie-list">
     <ErrorAlert
       v-if="store.error"
       :message="store.error"
       class="mb-8"
+      data-testid="error-alert"
     />
     
     <div 
       v-if="store.isLoading" 
-      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4"
+      data-testid="loading-grid"
     >
-      <MovieCardSkeleton v-for="n in 6" :key="n" />
+      <MovieCardSkeleton v-for="n in 10" :key="n" />
     </div>
     
     <div 
       v-else-if="!store.hasMovies" 
-      class="text-center py-12 bg-gray-50 rounded-lg"
+      class="text-center py-12 bg-gray-50 rounded-lg border border-gray-200"
+      data-testid="no-results"
     >
       <svg 
         class="mx-auto h-12 w-12 text-gray-400" 
@@ -52,11 +55,11 @@ onMounted(async () => {
     </div>
     
     <template v-else>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <TransitionGroup 
-          name="movie-list" 
-          appear
-        >
+      <div 
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4"
+        data-testid="movies-grid"
+      >
+        <TransitionGroup name="fade" appear>
           <MovieCard
             v-for="movie in store.movies"
             :key="movie.imdbID"
@@ -70,19 +73,18 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.movie-list-move,
-.movie-list-enter-active,
-.movie-list-leave-active {
+.fade-move,
+.fade-enter-active,
+.fade-leave-active {
   transition: all 0.3s ease;
 }
 
-.movie-list-enter-from,
-.movie-list-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
-  transform: translateY(30px);
 }
 
-.movie-list-leave-active {
+.fade-leave-active {
   position: absolute;
 }
 </style> 

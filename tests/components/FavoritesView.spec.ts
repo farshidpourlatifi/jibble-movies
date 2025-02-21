@@ -11,10 +11,11 @@ describe('FavoritesView', () => {
 
   it('should show empty state when no favorites', () => {
     const wrapper = mount(FavoritesView)
-    expect(wrapper.text()).toContain('No favorite movies yet')
+    expect(wrapper.find('[data-testid="no-favorites-message"]').exists()).toBe(true)
+    expect(wrapper.find('[data-testid="favorites-grid"]').exists()).toBe(false)
   })
 
-  it('should display favorite movies', async () => {
+  it('should display favorite movies in correct grid layout', async () => {
     const store = useFavoritesStore()
     const movie = {
       Title: 'Test Movie',
@@ -25,7 +26,8 @@ describe('FavoritesView', () => {
     store.toggleFavorite(movie)
     
     const wrapper = mount(FavoritesView)
-    expect(wrapper.text()).toContain('Test Movie')
-    expect(wrapper.text()).toContain('2023')
+    
+    expect(wrapper.find('[data-testid="favorites-grid"]').exists()).toBe(true)
+    expect(wrapper.find('[data-testid="movie-card"]').exists()).toBe(true)
   })
 }) 

@@ -16,29 +16,28 @@ describe('Movie Search', () => {
   })
 
   it('should search for movies', () => {
-    cy.searchMovies('Batman')
+    cy.get('[data-testid="search-input"]').type('Batman')
     cy.wait('@searchMovies')
-    cy.contains('Batman').should('exist')
+    cy.get('[data-testid="movie-list"]').should('exist')
+    cy.get('[data-testid="movie-title"]').should('contain', 'Batman')
   })
 
   it('should show no results message when no movies found', () => {
-    cy.searchMovies('xxxxxxxxxxx')
+    cy.get('[data-testid=search-input]').type('ThisMovieDoesNotExist123456789')
     cy.wait('@noResults')
     cy.contains('No movies found').should('be.visible')
   })
 
   it('should show loading state while searching', () => {
-    cy.intercept(
-      'GET',
-      'https://jsonmock.hackerrank.com/api/movies/search/?Title=Superman&page=1',
-      {
-        delay: 1000,
-        fixture: 'movies.json'
-      }
-    ).as('delayedSearch')
+    cy.intercept('GET', '**/movies/search/**', (req) => {
+      req.on('response', (res) => {
+        res.setDelay(1000)
+      })
+    }).as('searchRequest')
 
-    cy.searchMovies('Superman')
-    cy.get('[role="status"]').should('exist')
-    cy.wait('@delayedSearch')
+    cy.get('[data-testid="search-input"]').type('Batman')
+    cy.get('[data-testid="loading-grid"]').should('exist')
+    cy.get('[data-testid="movie-skeleton"]').should('exist')
+    cy.wait('@searchRequest')
   })
 }) 

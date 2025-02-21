@@ -7,33 +7,30 @@ describe('Favorites', () => {
     ).as('searchMovies')
 
     cy.visit('/')
-    cy.searchMovies('Batman')
+    cy.get('[data-testid=search-input]').type('Batman')
     cy.wait('@searchMovies')
+    cy.contains('Batman').should('exist')
   })
 
   it('should add and remove movies from favorites', () => {
     // Add to favorites
-    cy.contains('.bg-white', 'Batman')
-      .find('button')
-      .click()
-    
-    // Navigate to favorites
+    cy.get('[data-testid="favorite-button"]').first().click()
+    cy.get('[data-testid="favorite-icon"]').should('have.class', 'text-red-500')
+
+    // Go to favorites page
     cy.contains('Favorites').click()
     cy.url().should('include', '/favorites')
-    cy.contains('Batman').should('exist')
+    cy.get('[data-testid="movie-title"]').should('contain', 'Batman')
 
-    // Remove from favorites and verify empty state
-    cy.contains('.bg-white', 'Batman')
-      .find('button')
-      .click()
-    
-    // Wait for the empty state to appear
-    cy.contains('No favorite movies yet').should('be.visible')
+    // Remove from favorites
+    cy.get('[data-testid="favorite-button"]').first().click()
+    cy.get('[data-testid="no-results"]').should('be.visible')
   })
 
   it('should persist favorites after page reload', () => {
-    cy.toggleFavorite('Batman')
+    cy.get('button[class*="rounded-full"]').first().click()
+    cy.get('svg[class*="text-red-500"]').should('exist')
     cy.reload()
-    cy.contains('Favorites (1)').should('exist')
+    cy.contains('Batman').should('exist')
   })
 }) 

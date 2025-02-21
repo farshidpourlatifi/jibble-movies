@@ -10,21 +10,20 @@ const isVisible = ref(false)
 </script>
 
 <template>
-  <div 
-    class="relative inline-block"
-    @mouseenter="isVisible = true"
-    @mouseleave="isVisible = false"
-  >
-    <slot />
+  <div class="relative inline-block" data-testid="tooltip">
+    <div @mouseenter="isVisible = true" @mouseleave="isVisible = false">
+      <slot></slot>
+    </div>
     <div 
-      v-show="isVisible"
-      class="absolute z-50 px-2 py-1 text-xs text-white bg-gray-900 rounded whitespace-nowrap shadow-lg transition-all duration-200"
+      v-if="isVisible"
+      class="absolute z-10 px-2 py-1 text-sm text-white bg-gray-900 rounded shadow-sm whitespace-nowrap"
       :class="{
         '-top-8 left-1/2 -translate-x-1/2 transform': position === 'top' || !position,
         '-bottom-8 left-1/2 -translate-x-1/2 transform': position === 'bottom',
         'left-full top-1/2 -translate-y-1/2 ml-2 transform': position === 'right',
         'right-full top-1/2 -translate-y-1/2 mr-2 transform': position === 'left'
       }"
+      data-testid="tooltip-content"
     >
       <div class="relative">
         {{ text }}
