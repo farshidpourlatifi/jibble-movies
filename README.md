@@ -82,7 +82,7 @@ pnpm preview
 ## Project Structure
 ```
 ├── src/
-│   ├── components/     # Reusable components
+│   ├── components/    # Reusable components
 │   ├── stores/        # Pinia stores
 │   ├── views/         # Page components
 │   ├── router/        # Vue Router configuration
@@ -91,106 +91,28 @@ pnpm preview
 ├── tests/
 │   └── components/    # Unit tests
 ├── cypress/
-│   ├── e2e/          # E2E tests
-│   └── fixtures/     # Test data
-└── public/           # Static assets
+│   ├── e2e/           # E2E tests
+│   └── fixtures/      # Test data
+└── public/            # Static assets
 ```
 
 ## Deployment
 
 The application is automatically deployed to Firebase Hosting when changes are pushed to the `production` branch.
 
-### Manual Deployment
-
-1. Install Firebase CLI:
-```bash
-npm install -g firebase-tools
-```
-
-2. Login to Firebase:
-```bash
-firebase login
-```
-
-3. Initialize Firebase (first time only):
-```bash
-firebase init hosting
-```
-
-4. Deploy:
-```bash
-firebase deploy
-```
-
-## Environment Variables
-
-- `VITE_API_BASE_URL`: API base URL (required)
-- `FIREBASE_PROJECT_ID`: Firebase project ID (for deployment)
-- `FIREBASE_SERVICE_ACCOUNT`: Firebase service account JSON (for CI/CD)
-
-## GitHub Actions Secrets Required
-
-For the CI/CD pipeline to work, you need to set these secrets in your GitHub repository:
-
-- `FIREBASE_SERVICE_ACCOUNT`: Your Firebase service account JSON
-- `FIREBASE_PROJECT_ID`: Your Firebase project ID
-- `VITE_API_BASE_URL`: Your API base URL
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
-## License
-
-MIT
 
 ## Development Guidelines
 
 ### Code Style Rules (.cursorrules)
 
-The project uses a `.cursorrules` file to define coding standards and best practices:
+The project uses a `.cursorrules` file to define coding standards and best practices.
 
-- Code Style and Structure
-  - Use Composition API and declarative programming patterns
-  - Follow SOLID principles
-  - Use descriptive variable names with auxiliary verbs (e.g., isLoading, hasError)
-  - Organize files systematically
-
-- Naming Conventions
-  - PascalCase for components (MovieCard.vue)
-  - camelCase for composables (useMovieSearch.ts)
-  - lowercase with dashes for directories (components/auth-wizard)
-  - .spec.ts extension for unit tests
-  - .cy.ts extension for Cypress tests
-
-- TypeScript Usage
-  - Use TypeScript for all code
-  - Prefer interfaces over types
-  - Use type inference where possible
-  - Define strict typing for API responses
 
 ### Project Instructions (instructions.txt)
 
-The `instructions.txt` file contains important project guidelines:
+The `instructions.txt` file contains important project guidelines
 
-- Testing Requirements
-  - Unit tests must cover all components and stores
-  - E2E tests must cover critical user flows
-  - Use data-testid for test selectors
-  - Follow AAA pattern in unit tests
 
-- Performance Guidelines
-  - Use VueUse for enhanced reactivity
-  - Implement lazy loading where appropriate
-  - Optimize bundle size
-  - Use code splitting
+## License
 
-- Code Review Standards
-  - All PRs must have tests
-  - Maintain test coverage thresholds
-  - Document complex logic
-  - Follow the defined code style
+MIT
